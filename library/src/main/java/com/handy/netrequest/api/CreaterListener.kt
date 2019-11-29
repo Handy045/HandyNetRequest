@@ -25,16 +25,16 @@ interface CreaterListener<RESULT, TARGET> {
      * 校验接口返回数据
      */
     @Throws(Exception::class)
-    fun checkResponse(response: RESULT)
+    fun checkResponse(response: RESULT, resultListener: ResultListener<TARGET>)
 
     /**
      * 解析接口返回数据
      */
     @Throws(Exception::class)
-    fun analyzeResponse(response: RESULT): TARGET
+    fun analyzeResponse(response: RESULT, resultListener: ResultListener<TARGET>): TARGET
 
     /**
      * 执行RxJava
      */
-    fun execute()
+    fun build()
 }

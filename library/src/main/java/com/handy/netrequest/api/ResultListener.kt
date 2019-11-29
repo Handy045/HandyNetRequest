@@ -9,7 +9,7 @@ package com.handy.netrequest.api
  */
 interface ResultListener<TARGET> {
 
-    fun registerDialogListener(dialogBuilder: DialogListener?)
+    fun registerDialogListener(listener: DialogListener?)
 
     /**
      * 正常处理
