@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
  * @author LiuJie https://github.com/Handy045
  * @date Created in 2019-11-29 16:12
  */
-interface RequesterListener<RESPONSE, RESULT> {
+interface CreaterListener<RESULT, TARGET> {
     /**
      * 准备提示框控件
      */
@@ -19,19 +19,19 @@ interface RequesterListener<RESPONSE, RESULT> {
      * 调用接口
      */
     @Throws(Exception::class)
-    fun callInterface(): RESPONSE
+    fun callInterface(): RESULT
 
     /**
      * 校验接口返回数据
      */
     @Throws(Exception::class)
-    fun checkResponse(response: RESPONSE)
+    fun checkResponse(response: RESULT)
 
     /**
      * 解析接口返回数据
      */
     @Throws(Exception::class)
-    fun analyzeResponse(response: RESPONSE): RESULT
+    fun analyzeResponse(response: RESULT): TARGET
 
     /**
      * 执行RxJava

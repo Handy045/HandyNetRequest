@@ -7,14 +7,14 @@ package com.handy.netrequest.api
  * @author LiuJie https://github.com/Handy045
  * @date Created in 2019-11-29 16:17
  */
-interface ResponderListener<RESPONDER> {
+interface ResultListener<TARGET> {
 
     fun registerDialogListener(dialogBuilder: DialogListener?)
 
     /**
      * 正常处理
      */
-    fun onSuccess(result: RESPONDER)
+    fun onSuccess(data: TARGET)
 
     /**
      * 异常处理
