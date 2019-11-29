@@ -1,5 +1,7 @@
 package com.handy.netrequest
 
+import com.handy.netrequest.base.BaseRequester
+
 /**
  * @title: Requester
  * @projectName HandyNetRequest

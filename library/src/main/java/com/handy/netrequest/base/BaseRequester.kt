@@ -1,4 +1,4 @@
-package com.handy.netrequest
+package com.handy.netrequest.base
 
 import android.app.Activity
 import android.content.Context
