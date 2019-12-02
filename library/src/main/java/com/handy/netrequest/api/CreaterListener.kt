@@ -19,7 +19,7 @@ interface CreaterListener<RESULT, TARGET> {
      * 调用接口
      */
     @Throws(Exception::class)
-    fun callInterface(): RESULT
+    fun <T> callInterface(): RESULT
 
     /**
      * 校验接口返回数据
