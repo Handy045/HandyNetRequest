@@ -13,25 +13,25 @@ interface CreaterListener<RESULT, TARGET> {
     /**
      * 准备提示框控件
      */
-    fun initDialogBuilder(activity: AppCompatActivity?): DialogListener?
+    fun initDialog(activity: AppCompatActivity): DialogListener?
 
     /**
      * 调用接口
      */
     @Throws(Exception::class)
-    fun callInterface(): RESULT
+    fun call(): RESULT
 
     /**
      * 校验接口返回数据
      */
     @Throws(Exception::class)
-    fun checkResponse(response: RESULT, resultListener: ResultListener<TARGET>)
+    fun check(response: RESULT, resultListener: ResultListener<TARGET>)
 
     /**
      * 解析接口返回数据
      */
     @Throws(Exception::class)
-    fun analyzeResponse(response: RESULT, resultListener: ResultListener<TARGET>): TARGET
+    fun conversion(response: RESULT, resultListener: ResultListener<TARGET>): TARGET
 
     /**
      * 执行RxJava
