@@ -36,5 +36,5 @@ interface CreaterListener<RESULT, TARGET> {
     /**
      * 执行RxJava
      */
-    fun build()
+    fun create()
 }
