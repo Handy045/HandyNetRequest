@@ -1,4 +1,4 @@
-package com.handy.netrequest
+package com.handy.netrequest.app
 
 import androidx.appcompat.app.AppCompatActivity
 import com.handy.netrequest.base.BaseApiCreater
