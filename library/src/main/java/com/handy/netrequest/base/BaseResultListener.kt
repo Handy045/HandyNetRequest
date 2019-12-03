@@ -27,6 +27,5 @@ abstract class BaseResultListener<TARGET> : ResultListener<TARGET> {
     }
 
     override fun onFinish() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

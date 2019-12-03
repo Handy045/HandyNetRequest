@@ -71,7 +71,9 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
     }
 
     override fun connect() {
-        resultListener?.registerDialogListener(initDialog(activity))
+        val dialogListener = initDialog(activity)
+        dialogListener?.showProgress(progressInfo)
+        resultListener?.registerDialogListener(dialogListener)
 
         MainScope().launch {
             val target: TARGET? = deferred?.await()
