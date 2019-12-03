@@ -5,7 +5,6 @@ import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import com.handy.netrequest.api.CreaterListener
 import com.handy.netrequest.api.DialogListener
-import com.handy.netrequest.api.ResultListener
 import com.handy.netrequest.config.NetRequestConfig
 import kotlinx.coroutines.*
 import java.io.Serializable
@@ -31,11 +30,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
     /**
      * 结果回调接口
      */
-    var resultListener: ResultListener<TARGET>? = null
-    /**
-     * 提示框初始化接口
-     */
-    val dialogListener: DialogListener? = this.initDialog(activity)
+    private var resultListener: BaseResultListener<TARGET>? = null
 
     /**
      * 提示内容配置类
@@ -88,6 +83,11 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
 
     override fun initDialog(activity: AppCompatActivity): DialogListener? {
         return null
+    }
+
+    fun setResultListener(listener: BaseResultListener<TARGET>): BaseApiCreater<RESULT, TARGET> {
+        this.resultListener = listener
+        return this
     }
 
     private fun isConnected(): Boolean {
