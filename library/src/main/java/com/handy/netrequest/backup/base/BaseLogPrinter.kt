@@ -1,7 +1,6 @@
 package com.handy.netrequest.base
 
 import android.util.Log
-import com.handy.netrequest.api.LogListener
 
 /**
  * @title: BaseLog

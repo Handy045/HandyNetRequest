@@ -1,8 +1,8 @@
 package com.handy.netrequest.api
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import kotlinx.coroutines.*
 
@@ -23,11 +23,11 @@ internal class CoroutineLifecycleListener(private val deferred: Deferred<*>) : L
     }
 }
 
-fun <T> LifecycleOwner.load(loader: suspend () -> T): Deferred<T> {
+fun <T> load(activity: AppCompatActivity, loader: suspend () -> T): Deferred<T> {
     val deferred = GlobalScope.async(context = Dispatchers.Default, start = CoroutineStart.LAZY) {
         loader()
     }
-    lifecycle.addObserver(CoroutineLifecycleListener(deferred))
+    activity.lifecycle.addObserver(CoroutineLifecycleListener(deferred))
     return deferred
 }
 

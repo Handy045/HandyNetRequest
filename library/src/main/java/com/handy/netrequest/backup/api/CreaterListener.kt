@@ -18,23 +18,20 @@ interface CreaterListener<RESULT, TARGET> {
     /**
      * 调用接口
      */
-    @Throws(Exception::class)
     fun call(): RESULT
 
     /**
      * 校验接口返回数据
      */
-    @Throws(Exception::class)
-    fun check(response: RESULT, resultListener: ResultListener<TARGET>)
+    fun check(response: RESULT): RESULT
 
     /**
      * 解析接口返回数据
      */
-    @Throws(Exception::class)
-    fun conversion(response: RESULT, resultListener: ResultListener<TARGET>): TARGET
+    fun final(response: RESULT, resultListener: ResultListener<TARGET>): TARGET
 
     /**
      * 执行RxJava
      */
-    fun create()
+    suspend fun create()
 }
