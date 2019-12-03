@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import com.handy.netrequest.api.CreaterListener
 import com.handy.netrequest.api.DialogListener
+import com.handy.netrequest.api.ResultListener
 import com.handy.netrequest.config.NetRequestConfig
 import kotlinx.coroutines.*
 import java.io.Serializable
@@ -30,7 +31,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
     /**
      * 结果回调接口
      */
-    private var resultListener: BaseResultListener<TARGET>? = null
+    private var resultListener: ResultListener<TARGET>? = null
 
     /**
      * 提示内容配置类
@@ -70,6 +71,8 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
     }
 
     override fun connect() {
+        resultListener?.registerDialogListener(initDialog(activity))
+
         MainScope().launch {
             val target: TARGET? = deferred?.await()
             if (target != null) {
@@ -85,7 +88,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
         return null
     }
 
-    fun setResultListener(listener: BaseResultListener<TARGET>): BaseApiCreater<RESULT, TARGET> {
+    fun setResultListener(listener: ResultListener<TARGET>): BaseApiCreater<RESULT, TARGET> {
         this.resultListener = listener
         return this
     }
