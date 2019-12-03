@@ -44,7 +44,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
     var errorMessage = ""
     var deferred: Deferred<TARGET?>? = null
 
-    override suspend fun initialize(): BaseApiCreater<RESULT, TARGET> {
+    override fun initialize(): BaseApiCreater<RESULT, TARGET> {
         deferred = GlobalScope.async {
             try {
                 if (isConnected()) {
@@ -74,7 +74,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
         return this
     }
 
-    override suspend fun connect() {
+    override fun connect() {
         MainScope().launch {
             val target: TARGET? = deferred?.await()
             if (target != null) {

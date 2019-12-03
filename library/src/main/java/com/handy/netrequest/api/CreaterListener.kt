@@ -28,10 +28,10 @@ interface CreaterListener<RESULT, TARGET> {
     /**
      * 获取协程Deferred对象
      */
-    suspend fun initialize(): CreaterListener<RESULT, TARGET>
+    fun initialize(): CreaterListener<RESULT, TARGET>
 
     /**
      * 执行协程
      */
-    suspend fun connect()
+    fun connect()
 }
