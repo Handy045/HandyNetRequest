@@ -2,15 +2,15 @@ package com.handy.netrequest.base
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.blankj.utilcode.util.LogUtils
-import com.blankj.utilcode.util.TimeUtils
 import com.handy.netrequest.api.CreaterListener
 import com.handy.netrequest.api.ResultListener
 import com.handy.netrequest.config.LifecycleListener
 import com.handy.netrequest.config.NetRequestConfig
 import kotlinx.coroutines.*
 import java.io.Serializable
+import java.util.*
 
 /**
  * @title: BaseApiCreater
@@ -54,7 +54,10 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
 
     override fun initialize(): BaseApiCreater<RESULT, TARGET> {
         if (isPrintLog) {
-            LogUtils.d("method: 初始化协程\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}")
+            Log.d(
+                "HandyNetRequest",
+                "method: 初始化协程\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
+            )
         }
         deferred = GlobalScope.async(context = Dispatchers.Default, start = CoroutineStart.LAZY) {
             try {
@@ -88,26 +91,35 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
 
     override fun connect() {
         if (isPrintLog) {
-            LogUtils.d("method: 协程执行准备\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}")
+            Log.d(
+                "HandyNetRequest",
+                "method: 协程执行准备\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
+            )
         }
         if (deferred == null) {
-            LogUtils.e("警告：请先执行initialize()方法，初始化协程")
+            Log.e("HandyNetRequest", "警告：请先执行initialize()方法，初始化协程")
         } else {
             if (resultListener == null) {
-                LogUtils.w("警告：结果回调接口是NULL")
+                Log.w("HandyNetRequest", "警告：结果回调接口是NULL")
             } else if (resultListener?.dialogListener == null) {
-                LogUtils.w("警告：结果回调接口的提示框接口是NULL")
+                Log.w("HandyNetRequest", "警告：结果回调接口的提示框接口是NULL")
             }
 
             resultListener?.dialogListener?.showProgress(progressInfo)
 
             GlobalScope.launch(Dispatchers.Main) {
                 if (isPrintLog) {
-                    LogUtils.d("method: 协程开始执行\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}")
+                    Log.d(
+                        "HandyNetRequest",
+                        "method: 协程开始执行\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
+                    )
                 }
                 val target: TARGET? = deferred!!.await()
                 if (isPrintLog) {
-                    LogUtils.d("method: 协程执行结束，并返回结果信息\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}\nresult: $target")
+                    Log.d(
+                        "HandyNetRequest",
+                        "method: 协程执行结束，并返回结果信息\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}\nresult: $target"
+                    )
                 }
                 if (target != null) {
                     resultListener?.onSuccess(target)
