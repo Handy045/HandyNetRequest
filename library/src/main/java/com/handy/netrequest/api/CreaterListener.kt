@@ -23,7 +23,7 @@ interface CreaterListener<RESULT, TARGET> {
     /**
      * 解析接口返回数据
      */
-    fun analyze(response: RESULT): TARGET?
+    fun analyze(result: RESULT): TARGET?
 
     /**
      * 获取协程Deferred对象
