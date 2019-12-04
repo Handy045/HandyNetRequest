@@ -3,6 +3,8 @@ package com.handy.netrequest.base
 import android.content.Context
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
+import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.TimeUtils
 import com.handy.netrequest.api.CreaterListener
 import com.handy.netrequest.api.DialogListener
 import com.handy.netrequest.api.ResultListener
@@ -21,6 +23,10 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
     CreaterListener<RESULT, TARGET>, Serializable {
 
     /**
+     *  是否打印调用日志
+     */
+    var isPrintLog = false
+    /**
      * XX服务
      */
     var serviceTag = ""
@@ -29,19 +35,27 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
      */
     var progressInfo = ""
     /**
-     * 结果回调接口
+     * 调用错误信息
      */
-    private var resultListener: ResultListener<TARGET>? = null
-
+    var errorMessage = ""
     /**
      * 提示内容配置类
      */
     var config = NetRequestConfig()
-    var errorMessage = ""
+    /**
+     * 协程JOB对象
+     */
     var deferred: Deferred<TARGET?>? = null
+    /**
+     * 结果回调接口
+     */
+    private var resultListener: ResultListener<TARGET>? = null
 
     override fun initialize(): BaseApiCreater<RESULT, TARGET> {
-        deferred = GlobalScope.async {
+        if (isPrintLog) {
+            LogUtils.d("method: 初始化协程\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}")
+        }
+        deferred = GlobalScope.async(context = Dispatchers.Default, start = CoroutineStart.LAZY) {
             try {
                 if (isConnected()) {
                     val result = call()
@@ -71,12 +85,21 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
     }
 
     override fun connect() {
+        if (isPrintLog) {
+            LogUtils.d("method: 协程执行准备\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}")
+        }
         val dialogListener = initDialog(activity)
         dialogListener?.showProgress(progressInfo)
         resultListener?.registerDialogListener(dialogListener)
 
-        MainScope().launch {
+        GlobalScope.launch(Dispatchers.Main) {
+            if (isPrintLog) {
+                LogUtils.d("method: 协程开始执行\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}")
+            }
             val target: TARGET? = deferred?.await()
+            if (isPrintLog) {
+                LogUtils.d("method: 协程执行结束，并返回结果信息\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}\nresult: $target")
+            }
             if (target != null) {
                 resultListener?.onSuccess(target)
             } else {
