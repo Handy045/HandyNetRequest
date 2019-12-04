@@ -124,7 +124,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
                 if (target != null) {
                     resultListener?.onSuccess(target)
                 } else {
-                    resultListener?.onFailed(Throwable(errorMessage))
+                    resultListener?.onFailed(Throwable(if (errorMessage.isEmpty()) config.PROMPT_FAILED else errorMessage))
                 }
                 resultListener?.onFinish()
             }
