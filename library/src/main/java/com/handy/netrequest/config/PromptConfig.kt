@@ -7,7 +7,7 @@ package com.handy.netrequest.config
  * @author LiuJie https://github.com/Handy045
  * @date Created in 2019-12-03 15:32
  */
-class NetRequestConfig {
+class PromptConfig {
     val PROMPT_LOADING = "数据获取中，请稍候"
     val PROMPT_PREPARING = "数据准备中，请稍候"
     val PROMPT_SUBMITTING = "数据提交中，请稍候"

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.handy.netrequest.api.CreaterListener
 import com.handy.netrequest.api.ResultListener
 import com.handy.netrequest.config.LifecycleListener
-import com.handy.netrequest.config.NetRequestConfig
+import com.handy.netrequest.config.PromptConfig
 import kotlinx.coroutines.*
 import java.io.Serializable
 import java.util.*
@@ -41,7 +41,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
     /**
      * 提示内容配置类
      */
-    var config = NetRequestConfig()
+    var promptConfig = PromptConfig()
     /**
      * 协程JOB对象
      */
@@ -68,20 +68,20 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
                             analyze(result)
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            errorMessage = serviceTag + config.PROMPT_ERROR_ANALYSIS
+                            errorMessage = serviceTag + promptConfig.PROMPT_ERROR_ANALYSIS
                             null
                         }
                     } else {
-                        errorMessage = serviceTag + config.PROMPT_ERROR_RESPONSE
+                        errorMessage = serviceTag + promptConfig.PROMPT_ERROR_RESPONSE
                         null
                     }
                 } else {
-                    errorMessage = config.PROMPT_NULL_NETWORK
+                    errorMessage = promptConfig.PROMPT_NULL_NETWORK
                     null
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                errorMessage = serviceTag + config.PROMPT_ERROR_SERVER
+                errorMessage = serviceTag + promptConfig.PROMPT_ERROR_SERVER
                 null
             }
         }
@@ -124,7 +124,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
                 if (target != null) {
                     resultListener?.onSuccess(target)
                 } else {
-                    resultListener?.onFailed(Throwable(if (errorMessage.isEmpty()) config.PROMPT_FAILED else errorMessage))
+                    resultListener?.onFailed(Throwable(if (errorMessage.isEmpty()) promptConfig.PROMPT_FAILED else errorMessage))
                 }
                 resultListener?.onFinish()
             }
