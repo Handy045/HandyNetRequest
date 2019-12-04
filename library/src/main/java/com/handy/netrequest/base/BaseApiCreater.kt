@@ -19,7 +19,10 @@ import java.util.*
  * @author LiuJie https://github.com/Handy045
  * @date Created in 2019-12-03 11:09
  */
-abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
+abstract class BaseApiCreater<RESULT, TARGET>(
+    var activity: AppCompatActivity,
+    var logTag: String = "HandyNetRequest"
+) :
     CreaterListener<RESULT, TARGET>, Serializable {
 
     /**
@@ -55,7 +58,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
     override fun initialize(): BaseApiCreater<RESULT, TARGET> {
         if (isPrintLog) {
             Log.d(
-                "HandyNetRequest",
+                logTag,
                 "method: 初始化协程\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
             )
         }
@@ -92,17 +95,17 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
     override fun connect() {
         if (isPrintLog) {
             Log.d(
-                "HandyNetRequest",
+                logTag,
                 "method: 协程执行准备\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
             )
         }
         if (deferred == null) {
-            Log.e("HandyNetRequest", "警告：请先执行initialize()方法，初始化协程")
+            Log.e(logTag, "警告：请先执行initialize()方法，初始化协程")
         } else {
             if (resultListener == null) {
-                Log.w("HandyNetRequest", "警告：结果回调接口是NULL")
+                Log.w(logTag, "警告：结果回调接口是NULL")
             } else if (resultListener?.dialogListener == null) {
-                Log.w("HandyNetRequest", "警告：结果回调接口的提示框接口是NULL")
+                Log.w(logTag, "警告：结果回调接口的提示框接口是NULL")
             }
 
             resultListener?.dialogListener?.showProgress(progressInfo)
@@ -110,14 +113,14 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
             GlobalScope.launch(Dispatchers.Main) {
                 if (isPrintLog) {
                     Log.d(
-                        "HandyNetRequest",
+                        logTag,
                         "method: 协程开始执行\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
                     )
                 }
                 val target: TARGET? = deferred!!.await()
                 if (isPrintLog) {
                     Log.d(
-                        "HandyNetRequest",
+                        logTag,
                         "method: 协程执行结束，并返回结果信息\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}\nresult: $target"
                     )
                 }
