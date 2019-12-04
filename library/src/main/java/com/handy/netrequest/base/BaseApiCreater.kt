@@ -65,9 +65,21 @@ abstract class BaseApiCreater<RESULT, TARGET>(
         deferred = GlobalScope.async(context = Dispatchers.Default, start = CoroutineStart.LAZY) {
             try {
                 if (isConnected()) {
+                    if (isPrintLog) {
+                        Log.d(
+                            logTag,
+                            "method: 开始调用接口\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
+                        )
+                    }
                     val result = call()
                     if (result != null) {
                         try {
+                            if (isPrintLog) {
+                                Log.d(
+                                    logTag,
+                                    "method: 开始解析数据\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
+                                )
+                            }
                             analyze(result)
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -131,6 +143,27 @@ abstract class BaseApiCreater<RESULT, TARGET>(
                 }
                 resultListener?.onFinish()
             }
+        }
+        return null
+    }
+
+    override suspend fun await(): TARGET? {
+        if (isPrintLog) {
+            Log.d(
+                logTag,
+                "method: 协程准备执行\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
+            )
+        }
+        if (deferred == null) {
+            Log.e(logTag, "警告：请先执行initialize()方法，初始化协程")
+        } else {
+            if (isPrintLog) {
+                Log.d(
+                    logTag,
+                    "method: 协程开始执行\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
+                )
+            }
+            return deferred!!.await()
         }
         return null
     }
