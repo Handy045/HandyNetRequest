@@ -1,5 +1,6 @@
 package com.handy.netrequest.app
 
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.handy.netrequest.base.BaseApiCreater
 
@@ -12,10 +13,12 @@ import com.handy.netrequest.base.BaseApiCreater
  */
 class TestApi(activity: AppCompatActivity) : BaseApiCreater<String, Int>(activity) {
     override fun call(): String? {
-        return "null"
+        Log.d("NetRequest", "call " + Thread.currentThread().name)
+        return "aaaaaaaa"
     }
 
     override fun analyze(response: String): Int? {
+        Log.d("NetRequest", "analyze " + Thread.currentThread().name)
         if (response != "null") {
             return response.length
         } else {
