@@ -76,7 +76,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
                         null
                     }
                 } else {
-                    errorMessage = serviceTag + config.PROMPT_NULL_NETWORK
+                    errorMessage = config.PROMPT_NULL_NETWORK
                     null
                 }
             } catch (e: Exception) {
