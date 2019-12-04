@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.TimeUtils
 import com.handy.netrequest.api.CreaterListener
-import com.handy.netrequest.api.DialogListener
 import com.handy.netrequest.api.ResultListener
 import com.handy.netrequest.config.NetRequestConfig
 import kotlinx.coroutines.*
@@ -88,9 +87,14 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
         if (isPrintLog) {
             LogUtils.d("method: 协程执行准备\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}")
         }
-        val dialogListener = initDialog(activity)
-        dialogListener?.showProgress(progressInfo)
-        resultListener?.registerDialogListener(dialogListener)
+
+        if (resultListener == null) {
+            LogUtils.w("警告：结果回调接口是NULL")
+        } else if (resultListener?.dialogListener == null) {
+            LogUtils.w("警告：结果回调接口的提示框接口是NULL")
+        }
+
+        resultListener?.dialogListener?.showProgress(progressInfo)
 
         GlobalScope.launch(Dispatchers.Main) {
             if (isPrintLog) {
@@ -107,10 +111,6 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
             }
             resultListener?.onFinish()
         }
-    }
-
-    override fun initDialog(activity: AppCompatActivity): DialogListener? {
-        return null
     }
 
     fun setResultListener(listener: ResultListener<TARGET>): BaseApiCreater<RESULT, TARGET> {
