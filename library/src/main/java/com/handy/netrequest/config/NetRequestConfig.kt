@@ -12,7 +12,7 @@ class NetRequestConfig {
     val PROMPT_PREPARING = "数据准备中，请稍候"
     val PROMPT_SUBMITTING = "数据提交中，请稍候"
 
-    val PROMPT_FAILED = "服务连接失败，请联系管理员"
+    val PROMPT_FAILED = "服务请求失败，请联系管理员"
     val PROMPT_ERROR_SERVER = "服务异常，请联系管理员"
     val PROMPT_ERROR_TIMEOUT = "服务连接超时，请稍后再试"
     val PROMPT_ERROR_RESPONSE = "服务返回数据错误，请联系管理员"
