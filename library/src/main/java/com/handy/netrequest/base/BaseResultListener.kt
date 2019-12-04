@@ -10,13 +10,8 @@ import com.handy.netrequest.api.ResultListener
  * @author LiuJie https://github.com/Handy045
  * @date Created in 2019-12-03 16:00
  */
-abstract class BaseResultListener<TARGET> : ResultListener<TARGET> {
-
-    private var dialogListener: DialogListener? = null
-
-    override fun registerDialogListener(listener: DialogListener?) {
-        this.dialogListener = listener
-    }
+abstract class BaseResultListener<TARGET>(override var dialogListener: DialogListener?) :
+    ResultListener<TARGET> {
 
     override fun onSuccess(data: TARGET) {
         dialogListener?.dismiss()
