@@ -7,6 +7,7 @@ import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.TimeUtils
 import com.handy.netrequest.api.CreaterListener
 import com.handy.netrequest.api.ResultListener
+import com.handy.netrequest.config.LifecycleListener
 import com.handy.netrequest.config.NetRequestConfig
 import kotlinx.coroutines.*
 import java.io.Serializable
@@ -45,6 +46,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
      * 协程JOB对象
      */
     var deferred: Deferred<TARGET?>? = null
+
     /**
      * 结果回调接口
      */
@@ -80,6 +82,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
                 null
             }
         }
+        activity.lifecycle.addObserver(LifecycleListener(deferred!!))
         return this
     }
 
@@ -87,29 +90,32 @@ abstract class BaseApiCreater<RESULT, TARGET>(var activity: AppCompatActivity) :
         if (isPrintLog) {
             LogUtils.d("method: 协程执行准备\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}")
         }
-
-        if (resultListener == null) {
-            LogUtils.w("警告：结果回调接口是NULL")
-        } else if (resultListener?.dialogListener == null) {
-            LogUtils.w("警告：结果回调接口的提示框接口是NULL")
-        }
-
-        resultListener?.dialogListener?.showProgress(progressInfo)
-
-        GlobalScope.launch(Dispatchers.Main) {
-            if (isPrintLog) {
-                LogUtils.d("method: 协程开始执行\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}")
+        if (deferred == null) {
+            LogUtils.e("警告：请先执行initialize()方法，初始化协程")
+        } else {
+            if (resultListener == null) {
+                LogUtils.w("警告：结果回调接口是NULL")
+            } else if (resultListener?.dialogListener == null) {
+                LogUtils.w("警告：结果回调接口的提示框接口是NULL")
             }
-            val target: TARGET? = deferred?.await()
-            if (isPrintLog) {
-                LogUtils.d("method: 协程执行结束，并返回结果信息\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}\nresult: $target")
+
+            resultListener?.dialogListener?.showProgress(progressInfo)
+
+            GlobalScope.launch(Dispatchers.Main) {
+                if (isPrintLog) {
+                    LogUtils.d("method: 协程开始执行\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}")
+                }
+                val target: TARGET? = deferred!!.await()
+                if (isPrintLog) {
+                    LogUtils.d("method: 协程执行结束，并返回结果信息\ntime: ${TimeUtils.getNowString()}\nthread: ${Thread.currentThread().name}\nresult: $target")
+                }
+                if (target != null) {
+                    resultListener?.onSuccess(target)
+                } else {
+                    resultListener?.onFailed(Throwable(errorMessage))
+                }
+                resultListener?.onFinish()
             }
-            if (target != null) {
-                resultListener?.onSuccess(target)
-            } else {
-                resultListener?.onFailed(Throwable(errorMessage))
-            }
-            resultListener?.onFinish()
         }
     }
 
