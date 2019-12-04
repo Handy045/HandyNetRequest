@@ -26,7 +26,7 @@ interface CreaterListener<RESULT, TARGET> {
     fun analyze(result: RESULT): TARGET?
 
     /**
-     * 获取协程Deferred对象
+     * 初始化协程
      */
     fun initialize(): CreaterListener<RESULT, TARGET>
 
