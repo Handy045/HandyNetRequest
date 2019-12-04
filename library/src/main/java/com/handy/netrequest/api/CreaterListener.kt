@@ -27,7 +27,12 @@ interface CreaterListener<RESULT, TARGET> {
     fun initialize(): CreaterListener<RESULT, TARGET>
 
     /**
-     * 执行协程
+     * 执行协程，执行结果会通过resultListener回调，并支持dialogListener.showProgress()
      */
     fun connect(): Job?
+
+    /**
+     * 并发执行协程，直接返回执行结果，且与resultListener和dialogListener无关
+     */
+    suspend fun await(): TARGET?
 }
