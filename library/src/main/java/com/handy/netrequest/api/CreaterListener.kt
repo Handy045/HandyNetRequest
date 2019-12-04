@@ -1,5 +1,7 @@
 package com.handy.netrequest.api
 
+import kotlinx.coroutines.Job
+
 /**
  * @title: ResponderApi
  * @projectName HandyNetRequest
@@ -27,5 +29,5 @@ interface CreaterListener<RESULT, TARGET> {
     /**
      * 执行协程
      */
-    fun connect()
+    fun connect(): Job?
 }

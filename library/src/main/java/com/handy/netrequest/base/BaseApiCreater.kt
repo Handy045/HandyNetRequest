@@ -92,7 +92,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
         return this
     }
 
-    override fun connect() {
+    override fun connect(): Job? {
         if (isPrintLog) {
             Log.d(
                 logTag,
@@ -110,7 +110,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
 
             resultListener?.dialogListener?.showProgress(progressInfo)
 
-            GlobalScope.launch(Dispatchers.Main) {
+            return GlobalScope.launch(Dispatchers.Main) {
                 if (isPrintLog) {
                     Log.d(
                         logTag,
@@ -132,6 +132,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
                 resultListener?.onFinish()
             }
         }
+        return null
     }
 
     fun setResultListener(listener: ResultListener<TARGET>): BaseApiCreater<RESULT, TARGET> {
