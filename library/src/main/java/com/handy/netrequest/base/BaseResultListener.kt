@@ -1,7 +1,6 @@
 package com.handy.netrequest.base
 
 import com.handy.netrequest.api.DialogListener
-import com.handy.netrequest.api.ResultListener
 
 /**
  * @title: BaseResultListener
@@ -10,17 +9,16 @@ import com.handy.netrequest.api.ResultListener
  * @author LiuJie https://github.com/Handy045
  * @date Created in 2019-12-03 16:00
  */
-abstract class BaseResultListener<TARGET>(override var dialogListener: DialogListener? = null) :
-    ResultListener<TARGET> {
+abstract class BaseResultListener<TARGET>(var dialogListener: DialogListener? = null) {
 
-    override fun onSuccess(data: TARGET) {
+    fun onSuccess(data: TARGET) {
         dialogListener?.dismiss()
     }
 
-    override fun onFailed(throwable: Throwable) {
+    fun onFailed(throwable: Throwable) {
         dialogListener?.dismiss()
     }
 
-    override fun onFinish() {
+    fun onFinish() {
     }
 }
