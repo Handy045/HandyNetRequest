@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.handy.netrequest.api.CreaterListener
+import com.handy.netrequest.api.DialogListener
 import com.handy.netrequest.config.LifecycleListener
 import com.handy.netrequest.config.PromptConfig
 import kotlinx.coroutines.*
@@ -49,6 +50,8 @@ abstract class BaseApiCreater<RESULT, TARGET>(
      * 协程JOB对象
      */
     var deferred: Deferred<TARGET?>? = null
+
+    var dialogListener: DialogListener? = null
 
     override fun initialize(): BaseApiCreater<RESULT, TARGET> {
         if (isDebug) {
@@ -111,11 +114,15 @@ abstract class BaseApiCreater<RESULT, TARGET>(
         } else {
             if (resultListener == null) {
                 Log.w(logTag, "警告：结果回调接口是NULL")
-            } else if (resultListener?.dialogListener == null) {
-                Log.w(logTag, "警告：结果回调接口的提示框接口是NULL")
+            } else {
+                if (dialogListener == null) {
+                    Log.w(logTag, "警告：结果回调接口的提示框接口是NULL")
+                } else {
+                    resultListener?.setDialogListener(dialogListener)
+                }
             }
 
-            resultListener?.dialogListener?.showProgress(progressInfo)
+            dialogListener?.showProgress(progressInfo)
 
             return GlobalScope.launch(Dispatchers.Main) {
                 if (isDebug) {
