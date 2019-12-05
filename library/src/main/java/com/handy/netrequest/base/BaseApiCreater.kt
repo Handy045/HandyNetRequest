@@ -108,7 +108,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
         if (isDebug) {
             Log.d(
                 logTag,
-                "method: 协程执行准备\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
+                "method: 协程准备执行\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
             )
         }
         if (deferred == null) {
