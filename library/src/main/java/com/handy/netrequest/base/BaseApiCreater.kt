@@ -50,7 +50,9 @@ abstract class BaseApiCreater<RESULT, TARGET>(
      * 协程JOB对象
      */
     var deferred: Deferred<TARGET?>? = null
-
+    /**
+     * 提示框对象
+     */
     var dialogListener: DialogListener? = null
 
     override fun initialize(): BaseApiCreater<RESULT, TARGET> {
