@@ -11,14 +11,14 @@ import com.handy.netrequest.api.DialogListener
  */
 abstract class BaseResultListener<TARGET>(var dialogListener: DialogListener? = null) {
 
-    fun onSuccess(data: TARGET) {
+    open fun onSuccess(data: TARGET) {
         dialogListener?.dismiss()
     }
 
-    fun onFailed(throwable: Throwable) {
+    open fun onFailed(throwable: Throwable) {
         dialogListener?.dismiss()
     }
 
-    fun onFinish() {
+    open fun onFinish() {
     }
 }
