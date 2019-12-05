@@ -10,9 +10,10 @@ import com.handy.netrequest.api.DialogListener
  * @date Created in 2019-12-03 16:00
  */
 abstract class BaseResultListener<TARGET> {
+
     private var dialogListener: DialogListener? = null
 
-    fun setDialogListener(listener: DialogListener? = null) {
+    fun setDialogListener(listener: DialogListener?) {
         this.dialogListener = listener
     }
 

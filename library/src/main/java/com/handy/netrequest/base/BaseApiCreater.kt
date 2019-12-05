@@ -53,7 +53,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
     /**
      * 提示框对象
      */
-    var dialogListener: DialogListener? = null
+    private var dialogListener: DialogListener? = null
 
     override fun initialize(): BaseApiCreater<RESULT, TARGET> {
         if (isDebug) {
@@ -170,6 +170,10 @@ abstract class BaseApiCreater<RESULT, TARGET>(
             return deferred!!.await()
         }
         return null
+    }
+
+    fun initDialogListener(listener: DialogListener?) {
+        this.dialogListener = listener
     }
 
     private fun isConnected(): Boolean {
