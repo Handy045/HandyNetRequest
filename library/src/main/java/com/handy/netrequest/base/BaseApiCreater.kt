@@ -28,7 +28,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
     /**
      *  是否打印调用日志
      */
-    var isPrintLog = false
+    var isDebug = false
     /**
      * XX服务
      */
@@ -56,7 +56,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
     private var resultListener: ResultListener<TARGET>? = null
 
     override fun initialize(): BaseApiCreater<RESULT, TARGET> {
-        if (isPrintLog) {
+        if (isDebug) {
             Log.d(
                 logTag,
                 "method: 初始化协程\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
@@ -65,7 +65,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
         deferred = GlobalScope.async(context = Dispatchers.Default, start = CoroutineStart.LAZY) {
             try {
                 if (isConnected()) {
-                    if (isPrintLog) {
+                    if (isDebug) {
                         Log.d(
                             logTag,
                             "method: 开始调用接口\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
@@ -74,7 +74,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
                     val result = call()
                     if (result != null) {
                         try {
-                            if (isPrintLog) {
+                            if (isDebug) {
                                 Log.d(
                                     logTag,
                                     "method: 开始解析数据\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
@@ -105,7 +105,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
     }
 
     override fun connect(): Job? {
-        if (isPrintLog) {
+        if (isDebug) {
             Log.d(
                 logTag,
                 "method: 协程执行准备\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
@@ -123,14 +123,14 @@ abstract class BaseApiCreater<RESULT, TARGET>(
             resultListener?.dialogListener?.showProgress(progressInfo)
 
             return GlobalScope.launch(Dispatchers.Main) {
-                if (isPrintLog) {
+                if (isDebug) {
                     Log.d(
                         logTag,
                         "method: 协程开始执行\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
                     )
                 }
                 val target: TARGET? = deferred!!.await()
-                if (isPrintLog) {
+                if (isDebug) {
                     Log.d(
                         logTag,
                         "method: 协程执行结束，并返回结果信息\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}\nresult: $target"
@@ -148,7 +148,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
     }
 
     override suspend fun await(): TARGET? {
-        if (isPrintLog) {
+        if (isDebug) {
             Log.d(
                 logTag,
                 "method: 协程准备执行\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
@@ -157,7 +157,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
         if (deferred == null) {
             Log.e(logTag, "警告：请先执行initialize()方法，初始化协程")
         } else {
-            if (isPrintLog) {
+            if (isDebug) {
                 Log.d(
                     logTag,
                     "method: 协程开始执行\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
