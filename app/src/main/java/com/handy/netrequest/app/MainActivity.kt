@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.handy.netrequest.base.BaseResultListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -77,17 +78,17 @@ class MainActivity : AppCompatActivity() {
             }
 
             // 单独调用
-//            TestApi(this).setResultListener(object : BaseResultListener<String>(null) {
-//                override fun onSuccess(data: String) {
-//                    super.onSuccess(data)
-//                    Log.d("NetRequest", "OnSuccess: ${data}")
-//                }
-//
-//                override fun onFailed(throwable: Throwable) {
-//                    super.onFailed(throwable)
-//                    Log.e("NetRequest", "onFailed: ${throwable.message}")
-//                }
-//            }).initialize().connect()
+            TestApi(activity = this, resultListener = object : BaseResultListener<String>(null) {
+                override fun onSuccess(data: String) {
+                    super.onSuccess(data)
+                    Log.d("NetRequest", "OnSuccess: ${data}")
+                }
+
+                override fun onFailed(throwable: Throwable) {
+                    super.onFailed(throwable)
+                    Log.e("NetRequest", "onFailed: ${throwable.message}")
+                }
+            }).initialize().connect()
         }
     }
 }

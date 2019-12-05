@@ -5,7 +5,6 @@ import android.net.ConnectivityManager
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.handy.netrequest.api.CreaterListener
-import com.handy.netrequest.api.ResultListener
 import com.handy.netrequest.config.LifecycleListener
 import com.handy.netrequest.config.PromptConfig
 import kotlinx.coroutines.*
@@ -21,7 +20,8 @@ import java.util.*
  */
 abstract class BaseApiCreater<RESULT, TARGET>(
     var activity: AppCompatActivity,
-    var logTag: String = "HandyNetRequest"
+    var logTag: String = "HandyNetRequest",
+    var resultListener: BaseResultListener<TARGET>? = null
 ) :
     CreaterListener<RESULT, TARGET>, Serializable {
 
@@ -49,11 +49,6 @@ abstract class BaseApiCreater<RESULT, TARGET>(
      * 协程JOB对象
      */
     var deferred: Deferred<TARGET?>? = null
-
-    /**
-     * 结果回调接口
-     */
-    private var resultListener: ResultListener<TARGET>? = null
 
     override fun initialize(): BaseApiCreater<RESULT, TARGET> {
         if (isDebug) {
@@ -166,11 +161,6 @@ abstract class BaseApiCreater<RESULT, TARGET>(
             return deferred!!.await()
         }
         return null
-    }
-
-    fun setResultListener(listener: ResultListener<TARGET>): BaseApiCreater<RESULT, TARGET> {
-        this.resultListener = listener
-        return this
     }
 
     private fun isConnected(): Boolean {

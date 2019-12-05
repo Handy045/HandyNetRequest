@@ -2,6 +2,7 @@ package com.handy.netrequest.app
 
 import androidx.appcompat.app.AppCompatActivity
 import com.handy.netrequest.base.BaseApiCreater
+import com.handy.netrequest.base.BaseResultListener
 import kotlinx.coroutines.delay
 
 /**
@@ -11,8 +12,12 @@ import kotlinx.coroutines.delay
  * @author LiuJie https://github.com/Handy045
  * @date Created in 2019-12-03 15:29
  */
-class TestApi(activity: AppCompatActivity, tag: String = "TestApi") :
-    BaseApiCreater<Int, String>(activity, tag) {
+class TestApi(
+    activity: AppCompatActivity,
+    tag: String = "TestApi",
+    resultListener: BaseResultListener<String>? = null
+) :
+    BaseApiCreater<Int, String>(activity, tag, resultListener) {
     init {
         isDebug = true
     }
