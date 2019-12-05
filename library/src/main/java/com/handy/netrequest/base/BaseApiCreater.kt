@@ -62,7 +62,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
                 "method: 初始化协程\ntime: ${Date().time}\nthread: ${Thread.currentThread().name}"
             )
         }
-        deferred = GlobalScope.async(context = Dispatchers.Default, start = CoroutineStart.LAZY) {
+        deferred = GlobalScope.async(context = Dispatchers.IO, start = CoroutineStart.LAZY) {
             try {
                 if (isConnected()) {
                     if (isDebug) {
