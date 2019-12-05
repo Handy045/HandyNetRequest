@@ -10,7 +10,7 @@ import com.handy.netrequest.api.ResultListener
  * @author LiuJie https://github.com/Handy045
  * @date Created in 2019-12-03 16:00
  */
-abstract class BaseResultListener<TARGET>(override var dialogListener: DialogListener?) :
+abstract class BaseResultListener<TARGET>(override var dialogListener: DialogListener? = null) :
     ResultListener<TARGET> {
 
     override fun onSuccess(data: TARGET) {
