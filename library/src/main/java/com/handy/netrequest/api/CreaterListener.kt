@@ -12,6 +12,11 @@ import kotlinx.coroutines.Job
 interface CreaterListener<RESULT, TARGET> {
 
     /**
+     * 初始化提示框
+     */
+    fun initDialogListener(): DialogListener?
+
+    /**
      * 调用接口
      */
     suspend fun call(): RESULT?
