@@ -23,13 +23,16 @@ abstract class BaseApiCreater<RESULT, TARGET>(
     var activity: AppCompatActivity,
     var logTag: String = "HandyNetRequest",
     var resultListener: BaseResultListener<TARGET>? = null
-) :
-    CreaterListener<RESULT, TARGET>, Serializable {
+) : CreaterListener<RESULT, TARGET>, Serializable {
 
     /**
      *  是否打印调用日志
      */
     var isDebug = false
+    /**
+     * 当dialogListener实例后，是否提示进度框
+     */
+    var isShowProgress = true
     /**
      * XX服务
      */
@@ -53,7 +56,7 @@ abstract class BaseApiCreater<RESULT, TARGET>(
     /**
      * 提示框对象
      */
-    private var dialogListener: DialogListener? = null
+    private var dialogListener: DialogListener? = this.initDialogListener()
 
     override fun initialize(): BaseApiCreater<RESULT, TARGET> {
         if (isDebug) {
@@ -124,7 +127,9 @@ abstract class BaseApiCreater<RESULT, TARGET>(
                 }
             }
 
-            dialogListener?.showProgress(progressInfo)
+            if (isShowProgress) {
+                dialogListener?.showProgress(progressInfo)
+            }
 
             return GlobalScope.launch(Dispatchers.Main) {
                 if (isDebug) {
@@ -172,8 +177,8 @@ abstract class BaseApiCreater<RESULT, TARGET>(
         return null
     }
 
-    fun initDialogListener(listener: DialogListener?) {
-        this.dialogListener = listener
+    override fun initDialogListener(): DialogListener? {
+        return null
     }
 
     private fun isConnected(): Boolean {
