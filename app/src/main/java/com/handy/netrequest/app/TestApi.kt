@@ -16,22 +16,21 @@ class TestApi(
     activity: AppCompatActivity,
     tag: String = "TestApi",
     resultListener: BaseResultListener<String>? = null
-) :
-    BaseApiCreater<Int, String>(activity, tag, resultListener) {
-    init {
-        isDebug = true
+) : BaseApiCreater<Map<String, String>, String>(activity, tag, resultListener) {
+
+    override suspend fun call(): Map<String, String>? {
+        //todo 网络请求
+        //模拟请求阻塞
+        delay(3000L)
+        //返回请求结果
+        return mutableMapOf("flag" to "success", "errorInfo" to "", "data" to "Hello World")
     }
 
-    override suspend fun call(): Int? {
-        delay(4000L)
-        return 1024
-    }
-
-    override suspend fun analyze(result: Int): String? {
-        if (result == 1024) {
-            return "Hello World"
+    override suspend fun analyze(result: Map<String, String>): String? {
+        if (result["flag"] == "success") {
+            return result["data"]
         } else {
-            errorMessage = "返回数据有误"
+            errorMessage = result["errorInfo"] ?: "Connect ERROR!"
             return null
         }
     }
