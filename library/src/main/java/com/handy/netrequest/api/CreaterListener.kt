@@ -19,12 +19,12 @@ interface CreaterListener<RESULT, TARGET> {
     /**
      * 调用接口
      */
-    suspend fun call(): RESULT?
+    fun call(): RESULT?
 
     /**
      * 解析接口返回数据
      */
-    suspend fun analyze(result: RESULT): TARGET?
+    fun analyze(result: RESULT): TARGET?
 
     /**
      * 初始化协程
