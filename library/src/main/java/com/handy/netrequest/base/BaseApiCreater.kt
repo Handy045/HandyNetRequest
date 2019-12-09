@@ -21,7 +21,7 @@ import java.util.*
  */
 abstract class BaseApiCreater<RESULT, TARGET>(
     var activity: AppCompatActivity,
-    var logTag: String = "BocoNetRequest",
+    var logTag: String = "HandyNetRequest",
     var result: BaseResult<TARGET>? = null
 ) : CreaterListener<RESULT, TARGET>, Serializable {
 
