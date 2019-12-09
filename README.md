@@ -145,7 +145,7 @@ allprojects {
 
 ```xml
 dependencies {
-        implementation 'com.github.Handy045:HandyNetRequest:1.1.2'
+        implementation 'com.github.Handy045:HandyNetRequest:最新版本'
 }
 ```
 
