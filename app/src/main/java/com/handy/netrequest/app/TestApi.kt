@@ -2,7 +2,7 @@ package com.handy.netrequest.app
 
 import androidx.appcompat.app.AppCompatActivity
 import com.handy.netrequest.base.BaseApiCreater
-import com.handy.netrequest.base.BaseResultListener
+import com.handy.netrequest.base.BaseResult
 
 /**
  * @title: TestApi
@@ -14,7 +14,7 @@ import com.handy.netrequest.base.BaseResultListener
 class TestApi(
     activity: AppCompatActivity,
     tag: String = "TestApi",
-    resultListener: BaseResultListener<String>? = null
+    resultListener: BaseResult<String>? = null
 ) : BaseApiCreater<Map<String, String>, String>(activity, tag, resultListener) {
 
     override fun call(): Map<String, String>? {

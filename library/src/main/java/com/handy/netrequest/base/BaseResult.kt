@@ -3,26 +3,23 @@ package com.handy.netrequest.base
 import com.handy.netrequest.api.DialogListener
 
 /**
- * @title: BaseResultListener
+ * @title: BaseResult
  * @projectName HandyNetRequest
  * @description: TODO
  * @author LiuJie https://github.com/Handy045
  * @date Created in 2019-12-03 16:00
  */
-abstract class BaseResultListener<TARGET> {
+abstract class BaseResult<TARGET> {
 
-    private var dialogListener: DialogListener? = null
-
-    fun setDialogListener(listener: DialogListener?) {
-        this.dialogListener = listener
-    }
+    var dialog: DialogListener? = null
 
     open fun onSuccess(data: TARGET) {
-        dialogListener?.dismiss()
+        dialog?.dismiss()
     }
 
     open fun onFailed(throwable: Throwable) {
-        dialogListener?.dismiss()
+        dialog?.dismiss()
+        dialog?.showError(throwable.message ?: "")
     }
 
     open fun onFinish() {

@@ -21,8 +21,8 @@ import java.util.*
  */
 abstract class BaseApiCreater<RESULT, TARGET>(
     var activity: AppCompatActivity,
-    var logTag: String = "HandyNetRequest",
-    var resultListener: BaseResultListener<TARGET>? = null
+    var logTag: String = "BocoNetRequest",
+    var result: BaseResult<TARGET>? = null
 ) : CreaterListener<RESULT, TARGET>, Serializable {
 
     /**
@@ -117,13 +117,13 @@ abstract class BaseApiCreater<RESULT, TARGET>(
         if (deferred == null) {
             Log.e(logTag, "警告：请先执行initialize()方法，初始化协程")
         } else {
-            if (resultListener == null) {
+            if (result == null) {
                 Log.w(logTag, "警告：结果回调接口是NULL")
             } else {
                 if (dialogListener == null) {
                     Log.w(logTag, "警告：结果回调接口的提示框接口是NULL")
                 } else {
-                    resultListener?.setDialogListener(dialogListener)
+                    result?.dialog = dialogListener
                 }
             }
 
@@ -146,11 +146,11 @@ abstract class BaseApiCreater<RESULT, TARGET>(
                     )
                 }
                 if (target != null) {
-                    resultListener?.onSuccess(target)
+                    result?.onSuccess(target)
                 } else {
-                    resultListener?.onFailed(Throwable(if (errorMessage.isEmpty()) promptConfig.PROMPT_FAILED else errorMessage))
+                    result?.onFailed(Throwable(if (errorMessage.isEmpty()) promptConfig.PROMPT_FAILED else errorMessage))
                 }
-                resultListener?.onFinish()
+                result?.onFinish()
             }
         }
         return null
